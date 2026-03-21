@@ -222,6 +222,15 @@
 			<zipfileset src="${dir.dist}/lib/commons-vfs2.jar">
 				<include name="org/apache/commons/vfs2/**" />
 			</zipfileset>
+			<zipfileset src="${dir.dist}/lib/jaxb-api.jar">
+				<include name="javax/xml/bind/**" />
+			</zipfileset>
+			<zipfileset src="${dir.dist}/lib/jaxb-impl.jar">
+				<include name="com/sun/xml/bind/**" />
+			</zipfileset>
+			<zipfileset src="${dir.dist}/lib/activation.jar">
+				<include name="javax/activation/**" />
+			</zipfileset>
 			<zipfileset src="${dir.dist}/lib/junrar.jar">
 				<include name="com/github/junrar/**" />
 			</zipfileset>
@@ -794,6 +803,7 @@
 		<javac srcdir="${dir.source}" destdir="${dir.build}" release="${jvm.version}" encoding="utf-8" debug="yes" debuglevel="lines,vars,source" includeAntRuntime="no">
 			<classpath>
 				<fileset dir="${dir.dist}/lib" />
+				<fileset dir="/usr/share/openjfx/lib" includes="*.jar" />
 			</classpath>
 		</javac>
 

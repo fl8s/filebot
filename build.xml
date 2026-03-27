@@ -841,7 +841,7 @@
 
 	<target name="revision" depends="init">
 		<exec executable="git" outputproperty="revision" failonerror="true">
-			<arg line="rev-list --count master" />
+			<arg line="rev-list --count HEAD" />
 		</exec>
 		<echo>Revision: ${revision}</echo>
 	</target>

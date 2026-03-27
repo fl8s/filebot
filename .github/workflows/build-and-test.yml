@@ -44,6 +44,36 @@ jobs:
         name: filebot-jar
         path: dist/FileBot_*.jar
 
+  e2e_real_world_test:
+    runs-on: ubuntu-22.04
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: filebot-jar
+        path: dist/
+
+    - name: Set up Java 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmediainfo-dev libchromaprint-tools
+
+    - name: Run Real-World Usage E2E Tests
+      run: |
+        chmod +x test_real_world_usage.sh
+        ./test_real_world_usage.sh
+
   docker:
     runs-on: ubuntu-22.04
     needs: build

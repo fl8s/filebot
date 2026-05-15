@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.prefs.Preferences;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -74,8 +73,6 @@ public class Main {
 					log.info("Reset preferences");
 					Settings.forPackage(Main.class).clear();
 
-					// restore preferences on start if empty (TODO: remove after a few releases)
-					ApplicationFolder.AppData.resolve("preferences.backup.xml").delete();
 				}
 
 				// clear caches
@@ -124,21 +121,6 @@ public class Main {
 
 			// GUI mode => start user interface
 			SwingUtilities.invokeLater(() -> {
-				// restore preferences on start if empty (TODO: remove after a few releases)
-				try {
-					if (Preferences.userNodeForPackage(Main.class).keys().length == 0) {
-						File f = ApplicationFolder.AppData.resolve("preferences.backup.xml");
-						if (f.exists()) {
-							log.fine("Restore user preferences: " + f);
-							Settings.restore(f);
-						} else {
-							log.fine("No user preferences found: " + f);
-						}
-					}
-				} catch (Exception e) {
-					debug.log(Level.WARNING, "Failed to restore preferences", e);
-				}
-
 				startUserInterface(args);
 
 				// run background tasks
@@ -212,9 +194,6 @@ public class Main {
 			// make sure any long running operations are done now and not later on the shutdown hook thread
 			HistorySpooler.getInstance().commit();
 			SupportDialog.maybeShow();
-
-			// restore preferences on start if empty (TODO: remove after a few releases)
-			Settings.store(ApplicationFolder.AppData.resolve("preferences.backup.xml"));
 
 			System.exit(0);
 		}));
